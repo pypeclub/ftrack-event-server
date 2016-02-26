@@ -10,6 +10,15 @@ import sys
 import traceback
 
 
+paths = os.getenv('PYTHONPATH').split(':')
+
+print os.getenv('FTRACK_SERVER')
+
+for path in paths:
+    sys.path.append(path.rstrip('\r'))
+
+
+
 class StreamToLogger(object):
     def __init__(self, logger, log_level=logging.INFO):
         self.logger = logger
@@ -53,6 +62,7 @@ def main():
     args = sys.argv[1:]
     paths = []
     for arg in args:
+        arg = os.path.abspath(arg).rstrip('\r')
         if os.path.isdir(arg):
             result = [os.path.join(dp, f) for dp, dn, filenames in os.walk(arg)
                         for f in filenames if os.path.splitext(f)[1] == '.py']
