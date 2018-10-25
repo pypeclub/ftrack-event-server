@@ -5,21 +5,16 @@ import importlib
 import ftrack_api
 
 """
-# Required - Path to folder with actions
-os.environ['FTRACK_ACTIONS_PATH'] = "" # Paths to folders where are located actions e.g. "M:/FtrackApi/../actions/"
-
 # Required - Needed for connection to Ftrack
-os.environ['FTRACK_SERVER'] = "" # Ftrack server e.g. "https://myFtrack.ftrackapp.com"
-os.environ['FTRACK_API_KEY'] = "" # Ftrack API key of user e.g. "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-os.environ['FTRACK_API_USER'] = "" # Ftrack username e.g. "user.name"
+FTRACK_SERVER # Ftrack server e.g. "https://myFtrack.ftrackapp.com"
+FTRACK_API_KEY # Ftrack API key of user e.g. "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+FTRACK_API_USER # Ftrack username e.g. "user.name"
 
-# Required - needed if not already set
-os.environ['AVALON_PROJECTS']="temp"    #  \
-os.environ['AVALON_ASSET']="temp"       #  }    Avalon need to set these env variables to any value.
-os.environ['AVALON_SILO']="temp"        # /
+# Required - Paths to folder with actions
+FTRACK_ACTIONS_PATH # Paths to folders where are located actions e.g. "M:/FtrackApi/../actions/"
 
-# Required - Needed for modules included in actions
-os.environ['PYTHONPATH ']="" # PYTHONPATH needs path to all modules (also modules used in actions) e.g. path to ftrack_api module
+# Required - Needed for import included modules
+PYTHONPATH # Path to ftrack_api and paths to all modules used in actions e.g. path to ftrack_action_handler
 """
 
 def run_server():

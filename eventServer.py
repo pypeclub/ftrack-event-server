@@ -2,19 +2,20 @@ import types
 import sys
 import os
 import importlib
+import toml
 import ftrack_api
 
 """
-# Required - Path to folder with events
-os.environ['FTRACK_EVENTS_PATH'] = "" # Path to folder where are located events e.g. "M:/FtrackApi/../events/"
-
 # Required - Needed for connection to Ftrack
 os.environ['FTRACK_SERVER'] = "" # Ftrack server e.g. "https://myFtrack.ftrackapp.com"
 os.environ['FTRACK_API_KEY'] = "" # Ftrack API key of user e.g. "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
 os.environ['FTRACK_API_USER'] = "" # Ftrack username e.g. "user.name"
 
-# Required - Needed for modules included in events
-os.environ['PYTHONPATH ']="" # PYTHONPATH needs path to all modules (also modules used in events) e.g. path to ftrack_api module
+# Required - Paths to folder with actions
+os.environ['FTRACK_ACTIONS_PATH'] = "" # Paths to folders where are located actions e.g. "M:/FtrackApi/../actions/"
+
+# Required - Needed for import included modules
+os.environ['PYTHONPATH ']="" # Path to ftrack_api and paths to all modules used in actions e.g. path to ftrack_action_handler
 """
 
 def run_server():
