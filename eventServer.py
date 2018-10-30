@@ -7,16 +7,16 @@ import ftrack_api
 
 """
 # Required - Needed for connection to Ftrack
-os.environ['FTRACK_SERVER'] = "" # Ftrack server e.g. "https://myFtrack.ftrackapp.com"
-os.environ['FTRACK_API_KEY'] = "" # Ftrack API key of user e.g. "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-os.environ['FTRACK_API_USER'] = "" # Ftrack username e.g. "user.name"
+FTRACK_SERVER # Ftrack server e.g. "https://myFtrack.ftrackapp.com" FTRACK_API_KEY # Ftrack API key of user e.g. "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+FTRACK_API_USER # Ftrack username e.g. "user.name"
 
-# Required - Paths to folder with actions
-os.environ['FTRACK_ACTIONS_PATH'] = "" # Paths to folders where are located actions e.g. "M:/FtrackApi/../actions/"
+# Required - Paths to folder with events
+FTRACK_EVENTS_PATH # Paths to folders where are located actions e.g. "M:/FtrackApi/../events/"
 
 # Required - Needed for import included modules
-os.environ['PYTHONPATH ']="" # Path to ftrack_api and paths to all modules used in actions e.g. path to ftrack_action_handler
+PYTHONPATH # Path to ftrack_api and paths to all modules used in actions e.g. path to ftrack_action_handler
 """
+
 
 def run_server():
     # Separate all paths
@@ -40,7 +40,7 @@ def run_server():
 
             # Register all events
             for f in allEventFunctions:
-                session.event_hub.subscribe('topic=ftrack.update',allEventFunctions[f])
+                session.event_hub.subscribe('topic=ftrack.update', allEventFunctions[f])
 
 
     # Keep event_hub on session running

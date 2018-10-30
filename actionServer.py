@@ -17,6 +17,7 @@ FTRACK_ACTIONS_PATH # Paths to folders where are located actions e.g. "M:/Ftrack
 PYTHONPATH # Path to ftrack_api and paths to all modules used in actions e.g. path to ftrack_action_handler
 """
 
+
 def run_server():
     # Separate all paths
     actionsPaths = os.environ["FTRACK_ACTIONS_PATH"].split(os.pathsep)
@@ -33,12 +34,17 @@ def run_server():
             # Get only .py files with action functions
             if '.pyc' in m or '.py' not in m:
                 continue
-            mod = importlib.import_module(os.path.splitext(m)[0])
-            mod_functions = dict([(name, function)
-                for name, function in mod.__dict__.items() if isinstance(function, types.FunctionType)])
+            try:
+                mod = importlib.import_module(os.path.splitext(m)[0])
+                mod_functions = dict([(name, function)
+                for name, function in mod.__dict__.items() if isinstance(
+                    function, types.FunctionType)])
 
             # Run register on each action
-            mod_functions['register'](session)
+                mod_functions['register'](session)
+
+            except Exception as e:
+                print("File load error: '{0}' is not proper action - {1}".format(m, e))
 
 
     # keep event_hub on session running
