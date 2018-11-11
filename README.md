@@ -38,7 +38,7 @@ def register(session):
   action.register()
 
 ```
-## !!! REQUIRED Environment variables !!!
+## REQUIRED Environment variables
 # Needed for connection to Ftrack
 *FTRACK_SERVER*   - Ftrack server           - e.g. https://myFtrack.ftrackapp.com
 *FTRACK_API_KEY*  - Ftrack API key of user  - e.g. xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
@@ -50,8 +50,3 @@ def register(session):
 - It's possible to have multiple folder paths for both variables
   e.g. in win CMD: set FTRACK_ACTIONS_PATH=M:\FtrackApi\actions;N:\actions
   Server will iterate through all files in the folder open '.py' files and register actions/events
-
-# Needed for import included modules in actions/events
-*PYTHONPATH* - Add paths to all modules used in actions/events - e.g. path to module ftrack_api
-
-When all these Environment variables are set
