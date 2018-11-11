@@ -13,10 +13,10 @@ You can write the event plugins exactly how Ftrack documents you to do; http://f
 
 You can test your plugin by just running it individually. When you have collect two or more plugins that you want to run at the same time you can put them in folder. It's neccessary to have separate folders for actions and events!
 
-##EVENTS
+EVENTS
 - Event should be '.py' file with one method for one event
 
-##ACTIONS
+ACTIONS
 - Action should be '.py' file including action class and method "register" that requires 'session'
 ```
 class MyAction():
@@ -38,15 +38,20 @@ def register(session):
   action.register()
 
 ```
-## REQUIRED Environment variables
-# Needed for connection to Ftrack
-*FTRACK_SERVER*   - Ftrack server           - e.g. https://myFtrack.ftrackapp.com
-*FTRACK_API_KEY*  - Ftrack API key of user  - e.g. xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-*FTRACK_API_USER* - Ftrack username         - e.g. user.name
+### REQUIRED Environment variables
 
-# Paths to folder with actions/events
-*FTRACK_ACTIONS_PATH* - Folder paths to actions - e.g. "M:/FtrackApi/../actions/"
-*FTRACK_EVENTS_PATH*  - Folder paths to events  - e.g. "M:/FtrackApi/../events/"
-- It's possible to have multiple folder paths for both variables
-  e.g. in win CMD: set FTRACK_ACTIONS_PATH=M:\FtrackApi\actions;N:\actions
-  Server will iterate through all files in the folder open '.py' files and register actions/events
+**Needed for connection to Ftrack**
+```
+FTRACK_SERVER   - Ftrack server           - e.g. https://myFtrack.ftrackapp.com
+FTRACK_API_KEY  - Ftrack API key of user  - e.g. xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+FTRACK_API_USER - Ftrack username         - e.g. user.name
+```
+**Paths to folder with actions/events**
+```
+FTRACK_ACTIONS_PATH  - Folder paths to actions - e.g. "M:/FtrackApi/../actions/"
+FTRACK_EVENTS_PATH   - Folder paths to events  - e.g. "M:/FtrackApi/../events/"
+```
+
+It's possible to have multiple folder paths for both variables 
+e.g. in win CMD: set FTRACK_ACTIONS_PATH=M:\FtrackApi\actions;N:\actions
+Server will iterate through all files in the folder open '.py' files and register actions/events
