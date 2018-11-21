@@ -34,14 +34,17 @@ def run_server():
             # Get only .py files
             if '.pyc' in m or '.py' not in m:
                 continue
-            mod = importlib.import_module(os.path.splitext(m)[0])
-            allEventFunctions = dict([(name, function)
-                for name, function in mod.__dict__.items() if isinstance(function, types.FunctionType)])
+            try:
+                mod = importlib.import_module(os.path.splitext(m)[0])
+                allEventFunctions = dict([(name, function)
+                                          for name, function in mod.__dict__.items() if isinstance(function, types.FunctionType)])
 
-            # Register all events
-            for f in allEventFunctions:
-                session.event_hub.subscribe('topic=ftrack.update', allEventFunctions[f])
+                # Register all events
+                for f in allEventFunctions:
+                    session.event_hub.subscribe('topic=ftrack.update', allEventFunctions[f])
 
+            except Exception as e:
+                log.error("File load error: '{0}' is not proper action - {1}".format(m, e))
 
     # Keep event_hub on session running
     session.event_hub.wait()

@@ -4,6 +4,9 @@ import os
 import importlib
 import ftrack_api
 
+from app.api import Logger
+
+log = Logger.getLogger(__name__)
 """
 # Required - Needed for connection to Ftrack
 FTRACK_SERVER # Ftrack server e.g. "https://myFtrack.ftrackapp.com"
@@ -37,15 +40,14 @@ def run_server():
             try:
                 mod = importlib.import_module(os.path.splitext(m)[0])
                 mod_functions = dict([(name, function)
-                for name, function in mod.__dict__.items() if isinstance(
+                                      for name, function in mod.__dict__.items() if isinstance(
                     function, types.FunctionType)])
 
             # Run register on each action
                 mod_functions['register'](session)
 
             except Exception as e:
-                print("File load error: '{0}' is not proper action - {1}".format(m, e))
-
+                log.error("File load error: '{0}' is not proper action - {1}".format(m, e))
 
     # keep event_hub on session running
     session.event_hub.wait()
