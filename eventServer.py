@@ -5,6 +5,10 @@ import importlib
 import toml
 import ftrack_api
 
+from app.api import Logger
+
+log = Logger.getLogger(__name__)
+
 """
 # Required - Needed for connection to Ftrack
 FTRACK_SERVER # Ftrack server e.g. "https://myFtrack.ftrackapp.com" FTRACK_API_KEY # Ftrack API key of user e.g. "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
