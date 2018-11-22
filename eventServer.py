@@ -49,6 +49,7 @@ class FtrackEventServer():
 
     def stop_event_session(self):
         self.eventSession.event_hub.disconnect()
+        self.eventSession.close()
         self.eventSession = None
 
     def run_event_server(self):

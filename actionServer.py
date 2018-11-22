@@ -27,6 +27,7 @@ class FtrackActionServer():
 
     def stop_action_session(self):
         self.actionSession.event_hub.disconnect()
+        self.actionSession.close()
         self.actionSession = None
 
     def set_actions(self):
