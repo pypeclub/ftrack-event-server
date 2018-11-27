@@ -5,7 +5,6 @@ import importlib
 import ftrack_api
 
 from app.api import Logger
-
 log = Logger.getLogger(__name__)
 """
 # Required - Needed for connection to Ftrack
@@ -34,7 +33,6 @@ class FtrackServer():
                 ...
         """
         self.type = type
-
         self.actionsAvailable = True
         self.eventsAvailable = True
         # Separate all paths
@@ -65,13 +63,14 @@ class FtrackServer():
                 try:
                     mod = importlib.import_module(os.path.splitext(m)[0])
                     mod_functions = dict([(name, function)
-                    for name, function in mod.__dict__.items() if isinstance(
-                        function, types.FunctionType)])
-
+                                      for name, function in mod.__dict__.items() if isinstance(
+                    function, types.FunctionType)])
                         # Run register on each action
                     mod_functions['register'](self.session)
 
                 except KeyError as e:
+                    log.warning("'{0}' - not proper {1} (Missing register method in action)".format(m, self.type))
+                except Exception as e:
                     log.warning("'{0}' - not proper {1} ({2})".format(m, self.type, e))
 
     def run_server(self):
@@ -79,10 +78,12 @@ class FtrackServer():
         if self.type.lower() == 'event':
             if self.eventsAvailable is False:
                 log.error("FTRACK_EVENTS_PATH is not set, event server won't launch")
+                return
             self.set_files(self.eventsPaths)
         else:
             if self.actionsAvailable is False:
                 log.error("FTRACK_ACTIONS_PATH is not set, action server won't launch")
+                return
             self.set_files(self.actionsPaths)
         # keep event_hub on session running
         self.session.event_hub.wait()
