@@ -69,7 +69,7 @@ class FtrackServer():
                     mod_functions['register'](self.session)
 
                 except KeyError as e:
-                    log.warning("'{0}' - not proper {1} (Missing register method in action)".format(m, self.type))
+                    log.warning("'{0}' - not proper {1} (Missing register method)".format(m, self.type))
                 except Exception as e:
                     log.warning("'{0}' - not proper {1} ({2})".format(m, self.type, e))
 
