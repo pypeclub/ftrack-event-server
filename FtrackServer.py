@@ -30,7 +30,7 @@ class FtrackServer():
                 ...
                 server = FtrackServer('event')
                 server.run_server()
-                ...
+                ..
         """
         self.type = type
         self.actionsAvailable = True
@@ -54,7 +54,9 @@ class FtrackServer():
         # Iterate all paths
         for path in paths:
             # add path to PYTHON PATH
-            sys.path.append(path)
+            if path not in sys.path:
+                sys.path.append(path)
+
             # Get all modules with functions
             for m in os.listdir(path):
                 # Get only .py files with action functions
@@ -62,6 +64,7 @@ class FtrackServer():
                     continue
                 try:
                     mod = importlib.import_module(os.path.splitext(m)[0])
+                    importlib.reload(mod)
                     mod_functions = dict([(name, function)
                                       for name, function in mod.__dict__.items() if isinstance(
                     function, types.FunctionType)])
