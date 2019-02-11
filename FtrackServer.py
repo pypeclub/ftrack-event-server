@@ -40,7 +40,7 @@ class FtrackServer():
                 ..
         """
         # set Ftrack logging to Warning only - OPTIONAL
-        ftrack_log = Logger.getLogger("ftrack_api")
+        ftrack_log = logging.getLogger("ftrack_api")
         ftrack_log.setLevel(logging.WARNING)
 
         self.type = type
@@ -74,41 +74,46 @@ class FtrackServer():
                 sys.path.append(path)
 
             # Get all modules with functions
-            for m in os.listdir(path):
+            for file in os.listdir(path):
                 # Get only .py files with action functions
-                if '.pyc' in m or '.py' not in m:
-                    continue
+                try:
+                    if '.pyc' in file or '.py' not in file:
+                        continue
 
-                ignore = 'ignore_me'
-                mod = importlib.import_module(os.path.splitext(m)[0])
-                importlib.reload(mod)
-                mod_functions = dict(
-                    [
-                        (name, function)
-                        for name, function in mod.__dict__.items()
-                        if isinstance(
-                            function, types.FunctionType
-                        ) or name == ignore
-                    ]
-                )
-                # Don't care about ignore_me files
-                if (
-                    ignore in mod_functions and
-                    mod_functions[ignore] is True
-                ):
-                    continue
-                # separate files by register function
-                if 'register' not in mod_functions:
-                    msg = (
-                        '"{0}" - not proper {1} (Missing register method)'
-                    ).format(m, self.type)
+                    ignore = 'ignore_me'
+                    mod = importlib.import_module(os.path.splitext(file)[0])
+                    importlib.reload(mod)
+                    mod_functions = dict(
+                        [
+                            (name, function)
+                            for name, function in mod.__dict__.items()
+                            if isinstance(function, types.FunctionType) or
+                            name == ignore
+                        ]
+                    )
+                    # Don't care about ignore_me files
+                    if (
+                        ignore in mod_functions and
+                        mod_functions[ignore] is True
+                    ):
+                        continue
+                    # separate files by register function
+                    if 'register' not in mod_functions:
+                        msg = (
+                            '"{0}" - Missing register method'
+                        ).format(file, self.type)
+                        log.warning(msg)
+                        continue
+
+                    functions.append({
+                        'name': file,
+                        'register': mod_functions['register']
+                    })
+                except Exception as e:
+                    msg = 'Loading of file "{}" failed ({})'.format(
+                        file, str(e)
+                    )
                     log.warning(msg)
-                    continue
-
-                functions.append({
-                    'name': m,
-                    'register': mod_functions['register']
-                })
 
         if len(functions) < 1:
             raise Exception
@@ -117,7 +122,7 @@ class FtrackServer():
             try:
                 function['register'](self.session)
             except Exception as e:
-                msg = '"{}" register was not successful ({})'.format(
+                msg = '"{}" - register was not successful ({})'.format(
                     function['name'], str(e)
                 )
                 log.warning(msg)
