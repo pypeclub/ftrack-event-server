@@ -1,10 +1,12 @@
 import os
 import json
+import appdirs
 import ftrack_api
 from FtrackServer import FtrackServer
 from app import api
 
 log = api.Logger.getLogger(__name__)
+
 
 def check_cred(user, key):
     os.environ["FTRACK_API_USER"] = user
@@ -16,6 +18,7 @@ def check_cred(user, key):
         return True
     except Exception:
         return False
+
 
 def ask_yes_no():
     possible_yes = ["y", "yes"]
@@ -32,15 +35,23 @@ def ask_yes_no():
         )
         return ask_yes_no()
 
-def cli_login():
-    templates = os.environ['PYPE_STUDIO_TEMPLATES']
-    path_items = [templates, 'presets', 'ftrack', 'ftrack_event_server.json']
-    event_credentials_file = os.path.sep.join(path_items)
 
+def cli_login():
+    config_path = os.path.normpath(appdirs.user_data_dir('pype-app', 'pype'))
+    config_name = 'ftrack_event_cred.json'
+    event_credentials_file = os.path.join(config_path, config_name)
+
+    if not os.path.isdir(config_path):
+        os.makedirs(config_path)
+    if not os.path.exists(event_credentials_file):
+        open(event_credentials_file, 'w').close()
     enter_cred = True
 
     with open(event_credentials_file, 'r') as fp:
-        cred_data = json.load(fp)
+        try:
+            cred_data = json.load(fp)
+        except Exception:
+            cred_data = {}
 
     user = cred_data.get("FTRACK_API_USER", None)
     key = cred_data.get("FTRACK_API_KEY", None)
@@ -104,6 +115,7 @@ def cli_login():
 
 def main():
     cli_login()
+
 
 if (__name__ == ('__main__')):
     main()
